@@ -1,6 +1,6 @@
 name: SBOM-Automation-Lab
 
-on: [push] # 코드가 업데이트될 때마다 실행
+on: [push]
 
 jobs:
   build:
@@ -19,4 +19,5 @@ jobs:
         uses: anchore/scan-action@v3
         with:
           sbom: "my-app.sbom.json"
-          fail-build: false # 취약점이 발견되어도 공부를 위해 중단하지 않음
+          fail-build: false
+          db-update: true # <--- 이 줄을 추가해서 최신 취약점 정보를 가져오게 합니다!

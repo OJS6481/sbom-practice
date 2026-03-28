@@ -1,0 +1,22 @@
+name: SBOM-Automation-Lab
+
+on: [push] # 코드가 업데이트될 때마다 실행
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드를 서버로 가져오기
+        uses: actions/checkout@v3
+
+      - name: SBOM 생성 (Syft)
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: "my-app.sbom.json"
+
+      - name: 취약점 스캔하기 (Grype)
+        uses: anchore/scan-action@v3
+        with:
+          sbom: "my-app.sbom.json"
+          fail-build: false # 취약점이 발견되어도 공부를 위해 중단하지 않음
